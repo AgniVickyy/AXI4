@@ -6,15 +6,15 @@ Production-quality AXI4-Lite slave IP with a full UVM testbench featuring the Re
 
 ```
                           AXI4-Lite Bus (5 channels)
-                 ┌──────────────────────────────────────────┐
-                 │           axi4_lite_slave                 │
-                 │                                           │
-  AW ──────────►│  ┌────────────┐    ┌──────────────────┐  │
-  W  ──────────►│  │  Write FSM │───►│                  │  │
-  B  ◄──────────│  │ (IDLE/ADDR/│    │  axi4_lite       │  │──► ctrl_enable
-                 │  │  DATA/RESP)│    │  _reg_block      │  │──► ctrl_mode
-  AR ──────────►│  └────────────┘    │                  │  │──► ctrl_irq_en
-  R  ◄──────────│  ┌────────────┐    │  CTRL    (RW)   │  │
+                 ┌─────────────────────────────────────────┐
+                 │           axi4_lite_slave               │
+                 │                                         │
+   AW ──────────►│  ┌────────────┐    ┌─────────────────┐  │
+   W  ──────────►│  │  Write FSM │───►│                 │  │
+   B  ◄──────────│  │ (IDLE/ADDR/│    │  axi4_lite      │  │──► ctrl_enable
+                 │  │  DATA/RESP)│    │  _reg_block     │  │──► ctrl_mode
+   AR ──────────►│  └────────────┘    │                 │  │──► ctrl_irq_en
+   R  ◄──────────│  ┌────────────┐    │  CTRL    (RW)   │  │
                  │  │  Read FSM  │───►│  STATUS  (RO)   │  │──► irq_out
                  │  │ (IDLE/READ/│◄───│  DATA_IN (RW)   │  │
                  │  │  RESP)     │    │  DATA_OUT(RO)   │  │
@@ -22,8 +22,8 @@ Production-quality AXI4-Lite slave IP with a full UVM testbench featuring the Re
                  │                    │  IRQ_MASK(RW)   │  │
                  │                    │  SCRATCH (RW)   │  │
                  │                    │  VERSION (RO)   │  │
-                 │                    └──────────────────┘  │
-                 └──────────────────────────────────────────┘
+                 │                    └─────────────────┘  │
+                 └─────────────────────────────────────────┘
 ```
 
 ## Register Map
@@ -74,25 +74,25 @@ axi4_lite_slave/
 ┌───────────────────────────────────────────────────────────────────┐
 │                        uvm_test                                   │
 │  ┌─────────────────────────────────────────────────────────────┐  │
-│  │                     axi4_lite_env                            │  │
-│  │                                                              │  │
+│  │                     axi4_lite_env                           │  │
+│  │                                                             │  │
 │  │  ┌──────────────┐     ┌─────────────────────────────────┐   │  │
-│  │  │  axi4_lite   │     │        UVM RAL                   │   │  │
-│  │  │  _agent      │     │  ┌───────────────────────────┐   │   │  │
-│  │  │ ┌──────────┐ │     │  │  axi4_lite_reg_model      │   │   │  │
-│  │  │ │sequencer │◄┼─────┼──│  (CTRL, STATUS, DATA_IN,  │   │   │  │
-│  │  │ │ driver   │ │     │  │   DATA_OUT, IRQ_STATUS,    │   │   │  │
-│  │  │ │ monitor──┼─┼──┐  │  │   IRQ_MASK, SCRATCH, VER) │   │   │  │
-│  │  │ └──────────┘ │  │  │  └───────────────────────────┘   │   │  │
-│  │  └──────────────┘  │  │  ┌──────────┐  ┌────────────┐   │   │  │
-│  │                     ├──┼─►│predictor │  │  adapter    │   │   │  │
-│  │                     │  │  │(auto-    │  │ (reg2bus/  │   │   │  │
-│  │                     │  │  │ mirror)  │  │  bus2reg)  │   │   │  │
-│  │                     │  │  └──────────┘  └────────────┘   │   │  │
-│  │                     │  └─────────────────────────────────┘   │  │
-│  │                     │                                         │  │
-│  │                     ├───► scoreboard (RAL mirror check)       │  │
-│  │                     └───► coverage (addr × R/W × resp)        │  │
+│  │  │  axi4_lite   │     │        UVM RAL                  │   │  │
+│  │  │  _agent      │     │  ┌───────────────────────────┐  │   │  │
+│  │  │ ┌──────────┐ │     │  │  axi4_lite_reg_model      │  │   │  │
+│  │  │ │sequencer │◄┼─────┼──│  (CTRL, STATUS, DATA_IN,  │  │   │  │
+│  │  │ │ driver   │ │     │  │   DATA_OUT, IRQ_STATUS,   │  │   │  │
+│  │  │ │ monitor──┼─┼──┐  │  │   IRQ_MASK, SCRATCH, VER) │  │   │  │
+│  │  │ └──────────┘ │  │  │  └───────────────────────────┘  │   │  │
+│  │  └──────────────┘  │  │  ┌───────────┐  ┌───────────┐   │   │  │
+│  │                    ├──┼─►│predictor  │  │  adapter  │   │   │  │
+│  │                    │  │  │(auto-     │  │ (reg2bus/ │   │   │  │
+│  │                    │  │  │ mirror)   │  │  bus2reg) │   │   │  │
+│  │                    │  │  └───────────┘  └───────────┘   │   │  │
+│  │                    │  └─────────────────────────────────┘   │  │
+│  │                    │                                        │  │
+│  │                    ├───► scoreboard (RAL mirror check)      │  │
+│  │                    └───► coverage (addr × R/W × resp)       │  │
 │  └─────────────────────────────────────────────────────────────┘  │
 └───────────────────────────────────────────────────────────────────┘
 ```
@@ -122,46 +122,4 @@ axi4_lite_slave/
 | `axi4_lite_strobe_test` | WSTRB byte-lane writes |
 | `axi4_lite_reset_test` | RAL reset value verification for all registers |
 
-## Running
 
-```bash
-cd sim/
-
-# Single test
-make vcs TEST=axi4_lite_ral_frontdoor_test
-
-# Full regression
-make regression
-
-# Xcelium
-make xrun TEST=axi4_lite_walking_ones_test
-
-# Clean
-make clean
-```
-
-## Why RAL Matters for Tier-1 Interviews
-
-The UVM Register Abstraction Layer is used in every SoC verification environment at scale. This project demonstrates:
-
-1. **Register modeling**: Field-level access policies (RW, RO, W1C), reset values, volatile flags
-2. **Adapter pattern**: `reg2bus`/`bus2reg` translation between abstract RAL operations and concrete AXI transactions
-3. **Explicit predictor**: Auto-updates the RAL mirror from observed bus traffic (not relying on `set_auto_predict`)
-4. **Frontdoor access**: Standard register read/write through the bus
-5. **Field-level API**: `reg.field.set()` → `reg.update()` pattern
-6. **Built-in sequence compatibility**: Reset sequence reads all registers and compares against RAL reset values
-
-## Design Tradeoffs
-
-1. **Write FSM handles AW/W independently**: ARM spec allows AW and W in any order. The 4-state FSM (IDLE → ADDR_WAIT/DATA_WAIT → RESP) handles all orderings. Simpler slaves assume simultaneous AW+W, which violates spec.
-
-2. **W1C for IRQ_STATUS**: Write-1-to-clear is the industry standard for interrupt status registers. Software writes a 1 to bits it wants to clear, leaving others untouched. This prevents read-modify-write races.
-
-3. **Registered read output**: Adds 1 cycle read latency (RD_IDLE → RD_READ → RD_RESP) but meets timing at higher frequencies. The FSM adds the RD_READ state specifically for this registered path.
-
-4. **Explicit predictor vs auto_predict**: `set_auto_predict(0)` with an explicit `uvm_reg_predictor` is the production approach. Auto-predict updates the mirror from the driver (before the bus), which can miss errors. The explicit predictor updates from the monitor (after the bus), catching actual hardware behavior.
-
-## References
-
-- ARM AMBA AXI and ACE Protocol Specification (IHI 0022E)
-- UVM 1.2 Reference Manual, Chapter 18: Register Layer
