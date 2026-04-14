@@ -1,0 +1,38 @@
+# Simulator outputs
+simv
+simv.daidir/
+csrc/
+*.vcd
+*.vpd
+*.fsdb
+*.wlf
+
+# Xcelium
+xcelium.d/
+.bpad/
+xrun.log
+xrun.history
+
+# Questa / ModelSim
+work/
+transcript
+*.vstf
+modelsim.ini
+
+# VCS
+*.log
+ucli.key
+vc_hdrs.h
+DVEfiles/
+
+# Coverage
+urgReport/
+*.vdb/
+cov_work/
+coverage.db/
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
